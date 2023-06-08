@@ -1,0 +1,12 @@
+<!-- <p>measurement-units-list works!</p> -->
+<master-app></master-app>
+<div class="loader" *ngIf="loader">
+    <mat-spinner></mat-spinner>
+</div>
+<div class="list">
+
+    <app-list-of-table [allTableData]="allTableData" [tableHeaderData]="displayedColumns" [pageTitle]="pageTitle" [entityType]="'measurement-units-class'" (tableDeleteId)="delete($event)" (tableEditId)="edit($event)"></app-list-of-table>
+    <a class="addList" [routerLink]="['/dashboard/master/measurementUnits/measurementUnitsEntity']">
+        <img src="assets/images/feather-plus.svg" />
+    </a>
+</div>

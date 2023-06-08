@@ -1,0 +1,29 @@
+@import '../../../styles.scss';
+.submit{
+    background-color: $primary_color;
+    color: #ffffff;
+    border-radius: 5px;
+    border-radius: 10px;
+}
+.header_left{
+    a{
+        cursor: pointer;
+        background-color: $primary_color;
+        padding: 5px;
+        border-radius: 5px;
+        display: inline-block;
+        position: absolute;
+        top:10px;
+        img{
+            width: 10px;
+        }
+    }
+}
+.modal_body{
+    background-color: #f1f1f1;
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    position: relative;
+}

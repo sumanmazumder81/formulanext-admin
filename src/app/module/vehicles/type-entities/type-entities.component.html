@@ -1,0 +1,242 @@
+<!-- <p>type-entities works!</p> -->
+<div class="loader" *ngIf="loader">
+    <mat-spinner></mat-spinner>
+</div>
+<Vehicles-app></Vehicles-app>
+<div class="list">
+    <div class="header">
+        <h3>Vehicles Type Add</h3>
+    </div>
+    <div class="custom-form">
+        <form [formGroup]="vehiclesTypeFrom" class="row justify-content-center">
+            <div class="row mb-lg-3 mb-3">
+                <div class="col-lg-12 form-field-bg">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Vehicle Brand Id</mat-label>
+                                <mat-select matNativeControl formControlName="vehicleBrandId" name="vehicleBrandId">
+                                    <mat-option *ngIf="optionLoader"></mat-option>
+                                    <mat-option *ngFor="let vehicleBrand of vehiclesBrand" [value]="vehicleBrand.id">
+                                        {{vehicleBrand.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('vehicleBrandId').errors?.required">
+                                    Vehicles brand id is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Model</mat-label>
+                                <input matInput placeholder="Vehicle Model" id="model" name="model" formControlName="model">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/chassies-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('model').errors?.required">
+                                    Model number is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-12">
+                            <!-- <mat-form-field class="example-chip-list no-gap" appearance="outline">
+                                <mat-label>Licence Class</mat-label>
+                                <mat-chip-list #chipList>
+                                    <mat-chip *ngFor="let class of licenseClassSetList" (removed)="removeLicenceClass(class)">
+                                        {{class.className}}
+                                        <button matChipRemove>
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip>
+                                    <input placeholder="licence class" #fruitInput [matAutocomplete]="auto5" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                        (matChipInputTokenEnd)="addLicenseClass($event)" formControlName="licenceClasses">
+                                </mat-chip-list>
+                                <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="selectedLicenceClass($event)">
+                                    <mat-option *ngFor="let licenceClass of licenceClassListData" [value]="licenceClass">
+                                        {{licenceClass.className}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('licenceClasses').errors?.required">
+                                    Model number is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field> -->
+                            <mat-form-field appearance="outline" class="example-chip-list">
+                                <mat-label>Licence Class</mat-label>
+                                <mat-select multiple formControlName="licenceClasses">
+                                    <mat-optgroup>
+                                        <mat-form-field style="width:100%;">
+                                            <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" #search>
+                                            <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.value = ''">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </mat-optgroup>
+                                    <mat-option *ngFor="let item of licenceClass | filter:search.value:'className'" [value]="item.id">{{item.className}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('licenceClasses').errors?.required">
+                                    Licence class is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-slide-toggle formControlName="isPermitRequired">Is Permit</mat-slide-toggle>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="col-lg-12  mb-3" formGroupName="loadCapacity">
+                <div class="form-field-bg padding-left padding-right">
+                    <h4>
+                        <strong>Capacity Vehicles</strong>
+                    </h4>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Ulw</mat-label>
+                                <input type="text" matInput placeholder="Ulw" name="ulw" formControlName="ulw" appOnlyNumber="true">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/weight-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('loadCapacity')?.get('ulw').errors?.required">
+                                    ulw is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Gvw</mat-label>
+                                <input type="text" matInput placeholder="Gvw" name="gvw" formControlName="gvw" appOnlyNumber="true">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/weight-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('loadCapacity')?.get('gvw').errors?.required">
+                                    gvw is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Load capacity</mat-label>
+                                <input type="number" appOnlyNumber="true" [value]="getLoadCapacity" matInput placeholder="Load capacity" name="loadCapacity"
+                                    formControlName="loadCapacity">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/weight-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('loadCapacity')?.get('loadCapacity').errors?.required">
+                                    Load capacity
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Unit</mat-label>
+                                <mat-select matNativeControl formControlName="unit" name="unit">
+                                    <mat-option *ngIf="optionLoader"></mat-option>
+                                    <mat-option *ngFor="let unit of units" [value]="unit?.unit" [disabled]=" unit.unit === 'Feet'">
+                                        {{unit?.unit}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('loadCapacity')?.get('unit').errors?.required">
+                                    Vehicles unit is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="col-lg-12 mb-5" formGroupName="dimension">
+                <div class="form-field-bg padding-left padding-right">
+                    <div class="d-flex justify-content-between">
+                        <h3>Dimension Vehicles</h3>
+                        <button btn mat-button (click)="openDialog()" class="view">?</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Width</mat-label>
+                                <input matInput appOnlyNumber="true" placeholder="Vehicle width" id="width" name="width" formControlName="width">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/length-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('dimension')?.get('width').errors?.required">
+                                    Vehicles width is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Height</mat-label>
+                                <input matInput appOnlyNumber="true" placeholder="Vehicle weight" id="Height" name="Height" formControlName="Height">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/height-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('dimension')?.get('Height').errors?.required">
+                                    Vehicles height is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Length</mat-label>
+                                <input matInput appOnlyNumber="true" placeholder="Vehicle Length" id="depth" name="depth" formControlName="depth">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/beadth-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('dimension')?.get('depth').errors?.required">
+                                    Vehicles Length is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Unit</mat-label>
+                                <!-- <mat-select matNativeControl formControlName="unit" name="unit">
+                                    <mat-option *ngIf="optionLoader"></mat-option>
+                                    <mat-option *ngFor="let unit of units" [value]="unit?.id" [disabled]="unit.unit === 'KG'">
+                                        {{unit?.unit}}
+                                    </mat-option>
+                                </mat-select> -->
+
+                                <mat-select matNativeControl formControlName="unit" name="unit">
+                                    <mat-option *ngIf="optionLoader"></mat-option>
+                                    <mat-option *ngFor="let unit of units" [value]="unit?.unit" [disabled]=" unit.unit === 'KG'">
+                                        {{unit?.unit}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('dimension')?.get('unit').errors?.required">
+                                    Vehicles unit is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row justify-content-end">
+            <div class="col-lg-12 btn_sticky ">
+                <a mat-button class="save" *ngIf="!TypeEntitiesId" (click)="vehiclesTypeAdd()" [disabled]="!vehiclesTypeFrom.valid">Submit</a>
+                <a mat-button class="save" *ngIf="TypeEntitiesId" (click)="editVehiclesType()" [disabled]="!vehiclesTypeFrom.valid">Save</a>
+            </div>
+        </div>
+    </div>
+</div>

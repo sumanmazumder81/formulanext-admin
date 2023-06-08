@@ -1,0 +1,810 @@
+<form [formGroup]="ownerFrom" class="row">
+    <div class="col-lg-12">
+        <div class="custom-form-left" *ngIf="editId">
+            <div class="col-lg-12 d-flex align-items-center justify-content-between" >
+                <p *ngIf="whichPage == 'Driver'" style="margin-bottom: 0px;">Driver</p>
+                <p *ngIf="whichPage == 'Broker'" style="margin-bottom: 0px;">Broker</p>
+                <p *ngIf="whichPage == 'Owner'" style="margin-bottom: 0px;">Owner</p>
+                <mat-slide-toggle formControlName="isActive">Is active</mat-slide-toggle>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div formGroupName="userEntity">
+            <!-- owner personal information -->
+            <div class="custom-form-left" *ngIf="whichPage == 'Owner'">
+                <h3>Personal Information</h3>
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vehicle owner name</mat-label>
+                        <input matInput placeholder="Vehicle owner name" id="fullName" name="fullName" formControlName="fullName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/user-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('fullName')?.errors?.required">
+                            Vehical owner name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>AADHAAR NO</mat-label>
+                        <input type="text" matInput placeholder="AADHAAR NO" name="aadhaar" formControlName="aadhaar" minLength="12" maxLength="12" appOnlyNumber="true">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/aadhar-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('aadhaar')?.errors?.required">
+                            Aadhaar number is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('aadhaar')?.errors?.minlength">
+                            Aadhaar number must be <strong>{{ownerFrom?.get('userEntity')?.get('aadhaar')?.errors?.minlength.requiredLength}} character </strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-12" *ngIf="whichPage != 'Driver'">
+                    <mat-form-field appearance="outline">
+                        <mat-label>PAN NO</mat-label>
+                        <input type="text" matInput placeholder="PAN NO" name="pan" formControlName="pan" minLength="10" maxLength="10" id="panNumbers">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/pan-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('pan')?.errors?.required">
+                            Pan number is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('pan')?.errors?.minlength">
+                            Pan number must be <strong>{{ownerFrom?.get('userEntity')?.get('pan')?.errors?.minlength.requiredLength}} character </strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-error *ngIf="ownerFrom.touched && ownerFrom.errors && ownerFrom.errors.notSame">
+                        Pan number is not matched with GST number
+                    </mat-error>
+                </div>
+            </div>
+            <!-- owner company details -->
+            <div class="custom-form-left" *ngIf="whichPage == 'Owner'">
+                <div class="col-lg-12 d-flex justify-content-between">
+                    <h3>Company details</h3>
+                    <mat-slide-toggle (change)="companyStatus($event)" [checked]="checkStatus"></mat-slide-toggle>
+                </div>
+                <ng-container *ngIf="companyDetails">
+
+                
+                <div class="col-lg-12" formGroupName="company" >
+                    <div formGroupName="primary">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Company name</mat-label>
+                            <input matInput placeholder="Company name" name="companyName" formControlName="companyName">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/company-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('companyName')?.errors?.required">
+                                Company name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-lg-12" formGroupName="company">
+                    <div formGroupName="primary">
+                        <mat-form-field appearance="outline">
+                            <mat-label>GST Number</mat-label>
+                            <input matInput placeholder="Company name" name="gstNumber" formControlName="gstNumber" maxlength="15" minlength="15" [required]="!!ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('companyName').value">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/company-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('gstNumber')?.errors?.required">
+                                GST number is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('gstNumber')?.errors?.minlength">
+                                GST number must <strong>{{ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('gstNumber')?.errors?.minlength.requiredLength}} Digit</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </ng-container>
+            </div>
+            <!-- owner trade license -->
+            <div class="custom-form-left" *ngIf="whichPage == 'Owner'">
+                <div class="col-lg-12 d-flex justify-content-between">
+                    <p style="margin-bottom: 0px;"><strong>Trade license</strong></p>
+                    <mat-slide-toggle (change)="tradeLicenceStatus($event)" [checked]="checkStatus"></mat-slide-toggle>
+                </div>
+                <div *ngIf="tradeLicencehide" class="mt-3">
+                    <div class="col-lg-12" formGroupName="company">
+                        <div formGroupName="primary">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Trade license number</mat-label>
+                                <input matInput placeholder="Trade license number" name="tradeLicenceNumber" formControlName="tradeLicenceNumber">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/pan-icon.svg" />
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" formGroupName="company">
+                        <div formGroupName="primary">
+                            <mat-form-field appearance="outline" class="">
+                                <mat-label>Expiry Date</mat-label>
+                                <input matInput [matDatepicker]="expireDate" formControlName="expireDate" name="expireDate" datePickerFormat="DD/MM/YYYY">
+                                <mat-datepicker-toggle matSuffix [for]="expireDate"></mat-datepicker-toggle>
+                                <mat-datepicker #expireDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- owner broker details -->
+            <div class="custom-form-left" *ngIf="whichPage == 'Broker'">
+                <h3>Broker details</h3>
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Broker name</mat-label>
+                        <input matInput placeholder="Broker name" id="fullName" name="fullName" formControlName="fullName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/user-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('fullName')?.errors?.required">
+                            Broker name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>AADHAAR NO</mat-label>
+                        <input type="text" matInput placeholder="AADHAAR NO" name="aadhaar" formControlName="aadhaar" minLength="12" maxLength="12" appOnlyNumber="true">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/aadhar-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('aadhaar')?.errors?.required">
+                            Aadhaar number is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('aadhaar')?.errors?.minlength">
+                            Aadhaar number must be <strong>{{ownerFrom?.get('userEntity')?.get('aadhaar')?.errors?.minlength.requiredLength}} character </strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-12" *ngIf="whichPage != 'Driver'">
+                    <mat-form-field appearance="outline">
+                        <mat-label>PAN NO</mat-label>
+                        <input type="text" matInput placeholder="PAN NO" name="pan" formControlName="pan" minLength="10" maxLength="10" id="panNumbers">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/pan-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('pan')?.errors?.required">
+                            Pan number is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('pan')?.errors?.minlength">
+                            Pan number must be <strong>{{ownerFrom?.get('userEntity')?.get('pan')?.errors?.minlength.requiredLength}} character </strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-error *ngIf="ownerFrom.touched && ownerFrom.errors && ownerFrom.errors.notSame">
+                        Pan number is not matched with GST number
+                    </mat-error>
+                </div>
+            </div>
+            <div class="custom-form-left" *ngIf="whichPage == 'Broker'">
+                <div class="col-lg-12 d-flex justify-content-between">
+                    <h3>Company details</h3>
+                    <mat-slide-toggle (change)="companyStatus($event)" [checked]="checkStatus"></mat-slide-toggle>
+                </div>
+                <ng-container *ngIf="companyDetails">
+                    <div class="col-lg-12" formGroupName="company">
+                        <div formGroupName="primary">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Company name</mat-label>
+                                <input matInput placeholder="Company name" name="companyName" formControlName="companyName">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/company-icon.svg" />
+                                </mat-icon>
+                                <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('companyName')?.errors?.required">
+                                    Company name is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" formGroupName="company">
+                        <div formGroupName="primary">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>GST Number</mat-label>
+                                    <input matInput placeholder="Company name" name="gstNumber" formControlName="gstNumber" maxlength="15" minlength="15" [required]="!!ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('companyName').value">
+                                    <mat-icon matSuffix>
+                                        <img src="./assets/images/company-icon.svg" />
+                                    </mat-icon>
+                                    <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('gstNumber')?.errors?.required">
+                                        GST number is <strong>required</strong>
+                                    </mat-error>
+                                    <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('gstNumber')?.errors?.minlength">
+                                        GST number must <strong>{{ownerFrom?.get('userEntity')?.get('company')?.get('primary')?.get('gstNumber')?.errors?.minlength.requiredLength}} Digit</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                    </div>
+
+                </ng-container>
+                
+            </div>
+            <div class="custom-form-left" *ngIf="whichPage == 'Broker'">
+                <div class="col-lg-12 d-flex justify-content-between">
+                    <p style="margin-bottom: 0px;"><strong>Trade license</strong></p>
+                    <mat-slide-toggle (change)="tradeLicenceStatus($event)" [checked]="checkStatus"></mat-slide-toggle>
+                </div>
+                <div *ngIf="tradeLicencehide" class="mt-3">
+                    <div class="col-lg-12" formGroupName="company">
+                        <div formGroupName="primary">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Trade license number</mat-label>
+                                <input matInput placeholder="Trade license number" name="tradeLicenceNumber" formControlName="tradeLicenceNumber">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/pan-icon.svg" />
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" formGroupName="company">
+                        <div formGroupName="primary">
+                            <mat-form-field appearance="outline" class="">
+                                <mat-label>Expiry Date</mat-label>
+                                <input matInput [matDatepicker]="expireDate" formControlName="expireDate" name="expireDate" datePickerFormat="DD/MM/YYYY">
+                                <mat-datepicker-toggle matSuffix [for]="expireDate"></mat-datepicker-toggle>
+                                <mat-datepicker #expireDate></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-form-left" *ngIf="whichPage == 'Driver'">
+                <h3>Upload Profile</h3>
+                <div class="col-lg-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Driver name</mat-label>
+                        <input matInput placeholder="Vehicle owner name" id="fullName" name="fullName" formControlName="fullName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/user-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('fullName')?.errors?.required">
+                            Driver name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="custom-form-left" *ngIf="whichPage == 'Driver'">
+            <div class="col-lg-12">
+                <mat-form-field appearance="outline">
+                    <mat-label>Select Owner List</mat-label>
+                    <mat-select formControlName="ownerId">
+                        <mat-optgroup>
+                            <mat-form-field>
+                                <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" (input)="ownerList($event.target.value)"
+                                    #searchOwners>
+                                <button [disableRipple]="true" *ngIf="searchOwners.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchOwners.value = '';ownerLists('')">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </mat-optgroup>
+                        <!-- <mat-option [value]="-1">Self</mat-option> -->
+                        <mat-option *ngFor="let showOwnerList of ownerLists" [value]="showOwnerList.id">{{showOwnerList.userEntity.fullName}} ({{showOwnerList.meta.VendorCode}})</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="ownerFrom?.get('ownerId')?.errors?.required">
+                        Owner id is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div class="custom-form-left">
+            <h3>Comment</h3>
+            <mat-form-field appearance="outline">
+                <mat-label>Notes</mat-label>
+                <textarea type="text" matInput placeholder="Notes" name="notes" formControlName="notes"></textarea>
+                <!-- <mat-icon matSuffix>
+                <img src="./assets/images/pan-icon.svg" />
+            </mat-icon> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div formGroupName="userEntity" class="row ">
+            <div class="custom-form-right mb-3">
+
+
+            <div class="col-lg-12 d-flex justify-content-between">
+                <h3>Permanent address</h3>
+            </div>
+            <div  formGroupName="address">
+                <div class="row mb-3" formGroupName="primary">
+                    <div class="col-lg-6" >
+                        <mat-form-field appearance="outline">
+                            <mat-label>Street no</mat-label>
+                            <input matInput placeholder="Enter Street no" name="streetNo" formControlName="streetNo">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/street-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('primary')?.get('streetNo')?.errors?.required">
+                                Street no is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Street name</mat-label>
+                            <input matInput placeholder="Enter Street name" name="streetName" formControlName="streetName">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/street-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('primary')?.get('streetName')?.errors?.required">
+                                Street Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>landmark</mat-label>
+                            <input matInput placeholder="Enter landmark" name="landmark" formControlName="landmark">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/landmark-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('primary')?.get('landmark')?.errors?.required">
+                                Landmark is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput placeholder="City" name="city" formControlName="city">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/city-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('primary')?.get('city')?.errors?.required">
+                                City is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>State</mat-label>
+                            <input matInput placeholder="State" name="state" formControlName="state">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/state-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('primary')?.get('state')?.errors?.required">
+                                State is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Zip Code</mat-label>
+                            <input matInput placeholder="Zip Code" name="zipCode" formControlName="zipCode" minLength="6" maxLength="6">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/zip-code-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('primary')?.get('zipCode')?.errors?.required">
+                                Zip code <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <mat-slide-toggle formControlName="isPresentAddressSameAsPrimary" (change)="addressChange($event)" class="mb-3">Is present address Same</mat-slide-toggle>
+            <div class="row" formGroupName="address" *ngIf="!ownerFrom.get('userEntity').get('isPresentAddressSameAsPrimary').value">
+                <h3>Present address</h3>
+                <div class="col-lg-6" formGroupName="present">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Street no</mat-label>
+                        <input matInput placeholder="Enter Street no" name="streetNo" formControlName="streetNo">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/street-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('streetNo')?.errors?.required">
+                            Street no is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('streetNo')?.errors?.vatMatchesName">
+                            <strong>Street number is Matched</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="present">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Street name</mat-label>
+                        <input matInput placeholder="Enter Street name" name="streetName" formControlName="streetName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/street-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('streetName')?.errors?.required">
+                            Street Name is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('streetName')?.errors?.vatMatchesName">
+                            <strong>Street name is Matched</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-lg-6" formGroupName="present">
+                    <mat-form-field appearance="outline">
+                        <mat-label>landmark</mat-label>
+                        <input matInput placeholder="Enter landmark" name="landmark" formControlName="landmark">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/landmark-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('landmark')?.errors?.required">
+                            Landmark is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('landmark')?.errors?.vatMatchesName">
+                            <strong>landmark is Matched</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="present">
+                    <mat-form-field appearance="outline">
+                        <mat-label>City</mat-label>
+                        <input matInput placeholder="City" name="city" formControlName="city">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/city-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('city')?.errors?.required">
+                            City is <strong>required</strong>
+                        </mat-error>
+                        <!-- <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('city')?.errors?.vatMatchesName">
+                            <strong>City is Matched</strong>
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="present">
+                    <mat-form-field appearance="outline">
+                        <mat-label>State</mat-label>
+                        <input matInput placeholder="State" name="state" formControlName="state">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/state-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('state')?.errors?.required">
+                            State is <strong>required</strong>
+                        </mat-error>
+                        <!-- <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('state')?.errors?.vatMatchesName">
+                            <strong>State is Matched</strong>
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="present">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Zip Code</mat-label>
+                        <input matInput placeholder="Zip Code" name="zipCode" formControlName="zipCode" minLength="6" maxLength="6">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/zip-code-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('zipCode')?.errors?.required">
+                            Zip code <strong>required</strong>
+                        </mat-error>
+                        <!-- <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('address')?.get('present')?.get('zipCode')?.errors?.vatMatchesName">
+                            <strong>ZIP code is Matched</strong>
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+            <div class="custom-form-right mb-3 contact_info">
+                <div class="col-lg-12 d-flex align-items-center justify-content-between contact_info_head">
+                    <h3>Contact Information</h3>
+                    <a (click)="addItem()" class="addContact" [style.cursor]="pointer" *ngIf="!userEntitId">
+                        <img src="./assets/images/add-icon.svg" />
+                    </a>
+                </div>
+                <div class="row pr-0 par-contact" *ngFor="let item of ownerFrom.get('userEntity').get('contact')['controls']; let i = index;"
+                    [formGroup]="item">
+                    <div class="col-lg-12 d-flex justify-content-between align-items-center">
+                        <p>Contact {{i+1}}</p>
+                        <a (click)="deleteContactGroup(i)" *ngIf="!i==0" class="delete_btn" [style.cursor]="pointer">Delete</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Contact person name</mat-label>
+                            <input type="text" matInput placeholder="Contact person name" name="contactPersonName" formControlName="contactPersonName">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/user-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="item?.get('contactPersonName')?.errors?.required">
+                                Contact person name is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="item?.get('contactPersonName')?.errors?.contactCheck">
+                                <strong>Contact person name alrady exist</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email id</mat-label>
+                            <input type="email" id="email" matInput placeholder="Enter email" name="email" formControlName="email">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/email-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="item?.get('email')?.errors?.required">
+                                Email id is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="item?.get('email')?.errors?.email">
+                                Enter valid email
+                            </mat-error>
+                            <mat-error *ngIf="item?.get('email')?.errors?.pattern">
+                                Enter pattern valid email
+                            </mat-error>
+                            <mat-error *ngIf="item?.get('email')?.errors?.contactCheck">
+                                <strong>email alrady exist</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h3><strong>Add multiple contact number</strong></h3>
+                        <a (click)="contactNumberAdd(item)" class="addContact" [style.cursor]="pointer" *ngIf="!userEntitId">
+                            <img src="./assets/images/add-icon.svg" />
+                        </a>
+                    </div>
+                    <!-- {{item.get('contactList') | JSON}} -->
+                    <div class="col-lg-12" *ngFor="let item1 of item.get('contactList')['controls']; let j = index;" [formGroup]="item1">
+                        
+                        <div class="d-flex align-items-stretch justify-content-between contact_list">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Contact number</mat-label>
+                                <input matInput type="text" placeholder="Contact number" minlength="10" maxlength="10" name="contactNo" formControlName="contactNo" appOnlyNumber="true">
+                                <mat-icon matSuffix>
+                                    <img src="./assets/images/contact-icon.svg" />
+                                </mat-icon>
+                                <!-- <pre>{{item?.get('contactNo')?.errors | json}}</pre> -->
+                                <mat-error *ngIf="item?.get('contactNo')?.errors?.required">
+                                    Contact no is <strong>required</strong>
+                                </mat-error>
+                                <!-- <mat-error *ngIf="item?.get('contactNo')?.errors?.contactNoCheck">
+                                    Contact no is <strong>already exist</strong>
+                                </mat-error> -->
+                                <mat-error *ngIf="item?.get('contactNo')?.errors?.minlength">
+                                    Phone number must be <strong> {{item?.get('contactNo')?.errors?.minlength.requiredLength}}character </strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <div class="d-flex align-items-center">
+                                <div class="whatapp d-flex flex-row align-items-center justify-content-between mr-5">
+                                    <mat-label class="d-flex align-items-center">
+                                        <img src="./assets/images/whatsapp-icon.svg"  class="mr-3"/> 
+                                        Whatsapp
+                                    </mat-label>
+                                    <mat-slide-toggle formControlName="whatappStatus" class="me-3"></mat-slide-toggle>
+                                </div>
+                                <a *ngIf="j>0" (click)="deleteContactList(item, j)" class="delete"><img src="./assets/images/delete-white.svg"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+            <div class="custom-form-right mb-3" formGroupName="bankDetail">
+                <h3>Bank Information</h3>
+                <div class="row">
+
+
+                <div class="col-lg-6" formGroupName="primary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>ACCOUNT HOLDER NAME</mat-label>
+                        <input type="text" matInput placeholder="ACCOUNT HOLDER NAME" name="accountHolderName" formControlName="accountHolderName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/user-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('accountHolderName')?.errors?.required">
+                            Account Holder Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="primary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>NICK NAME</mat-label>
+                        <input type="text" matInput placeholder="NICK NAME" name="nickName" formControlName="nickName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/user-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('nickName')?.errors?.required">
+                            Nick Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="primary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>BANK NAME</mat-label>
+                        <input type="text" matInput placeholder="BANK NAME" name="bankName" formControlName="bankName">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/bank-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('bankName')?.errors?.required">
+                            Bank Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="primary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>IFSC CODE</mat-label>
+                        <input type="text" matInput placeholder="IFSC CODE" name="IFSCCode" formControlName="IFSCCode" minlength="10" maxLength="10">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/code-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('IFSCCode')?.errors?.required">
+                            IFSC Code is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('IFSCCode')?.errors?.minlength || ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('IFSCCode')?.errors?.maxlength">
+                            IFSC code must be <strong> 10 character </strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="primary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>ACCOUNT NUMBER</mat-label>
+                        <input type="text" appOnlyNumber="true" matInput placeholder="ACCOUNT NUMBER" name="accountNumber" formControlName="accountNumber">
+                        <mat-icon matSuffix>
+                            <img src="./assets/images/account-no-icon.svg" />
+                        </mat-icon>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('accountNumber')?.errors?.required">
+                            Account number is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-6" formGroupName="primary">
+                    <mat-form-field appearance="outline">
+                        <mat-label>ACCOUNT TYPE</mat-label>
+                        <!-- <input type="text" matInput placeholder="ACCOUNT TYPE" name="accountType" formControlName="accountType"> -->
+                        <mat-select matNativeControl formControlName="accountType" name="accountType">
+                            <mat-option *ngFor="let accountType of accountType" [value]="accountType.value">
+                                {{accountType.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="ownerFrom?.get('userEntity')?.get('bankDetail')?.get('primary')?.get('accountType')?.errors?.required">
+                            Account type is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h3>UPI List</h3>
+                    <a (click)="addUPIId()" class="addContact" [style.cursor]="pointer" *ngIf="!userEntitId">
+                            <img src="./assets/images/add-icon.svg"  />
+                    </a>
+                </div>
+                
+                <div class="row" formGroupName="primary">
+                    <!-- <div formArrayName="upiList"> -->
+                        <div class="col-lg-6 upiList d-flex align-items-start justify-content-between" *ngFor="let item of this.ownerFrom.get('userEntity').get('bankDetail').get('primary').get('upiList')['controls']; let i = index" [formGroup]="item">
+                        <mat-form-field appearance="outline">
+                            <mat-label>UPI ID</mat-label>
+                            <input type="text" matInput placeholder="UPI ID" name="UPIId" formControlName="UPIId" pattern="[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}">
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/upi-icon.svg" />
+                            </mat-icon>
+                            <mat-error *ngIf="item?.get('UPIId')?.errors?.required">
+                                UPI Id is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="item?.get('UPIId')?.errors?.pattern">
+                                UPI Id is <strong>not correct</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <a (click)="deleteUpi(i)" *ngIf="!i==0" class="delete"><img src="./assets/images/delete-white.svg"/></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div >
+            <div *ngIf="whichPage == 'Owner'">
+                <div class="row custom-form-right mb-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select Broker List</mat-label>
+                        <mat-select formControlName="brokers" (open)="consoe.log('close')">
+                            <mat-optgroup>
+                                <mat-form-field>
+                                    <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" (input)="brokerList($event.target.value)"
+                                        #searchbroker>
+                                    <button [disableRipple]="true" *ngIf="searchbroker.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchbroker.value = '';brokerList('')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </mat-optgroup>
+                            <mat-option *ngIf="!brokersOption.length">No data available</mat-option>
+                            <mat-option *ngFor="let showBrokrList of brokersOption" [value]="showBrokrList.id">{{showBrokrList.userEntity.fullName}} ({{showBrokrList.meta.VendorCode}})</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="ownerFrom?.get('brokers')?.errors?.required">
+                            Brokers list is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- <div *ngIf="editId">
+                        <mat-chip-list #ownerDriverList aria-label="Driver selection">
+                            <mat-chip *ngFor="let showDriverList of OwnerEditDriversList" (removed)="removeDriver(showDriverList)">
+                                {{showDriverList.userEntity.fullName}}
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Driver List</mat-label>
+                            <mat-select (selectionChange)="OwnerEditDriverListAdd($event)">
+                                <mat-optgroup>
+                                    <mat-form-field>
+                                        <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" (input)="brokerList($event.target.value)"
+                                            #searchDriver>
+                                        <button [disableRipple]="true" *ngIf="searchDriver.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchDriver.value = '';brokerList('')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </mat-optgroup>
+                                <mat-option *ngIf="!getDriverListsData.length">No data available</mat-option>
+                                <mat-option *ngFor="let showDriverList of getDriverListsData" [value]="showDriverList.userEntity.id">{{showDriverList.userEntity.fullName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+        <div class="">
+            <ng-container *ngIf="whichPage == 'Driver'">
+                <div class="row custom-form-right mb-3">
+                    <div class="col-lg-12">
+                        <!-- <mat-form-field appearance="outline" class="example-chip-list">
+                                <mat-label>License Class</mat-label>
+                                <mat-select multiple formControlName="licenceClasses">
+                                    <mat-optgroup>
+                                        <mat-form-field style="width:100%;">
+                                            <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" #search>
+                                            <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.value = ''">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </mat-optgroup>
+                                    <mat-option *ngFor="let item of licenceClass | filter:search.value:'className'" [value]="item.id">{{item.className}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vehiclesTypeFrom?.get('licenceClasses').errors?.required">
+                                    Licence class is
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field> -->
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>license No</mat-label>
+                            <input type="text" matInput placeholder="license No" name="licenceNo" formControlName="licenceNo" [minLength]="15" [maxLength]="15" >
+                            <mat-icon matSuffix>
+                                <img src="./assets/images/upi-icon.svg" />
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>License Expiry</mat-label>
+                            <input matInput [matDatepicker]="licenceExpiry" formControlName="licenceExpiry" datePickerFormat="DD/MM/YYYY" name="licenceExpiry">
+                            <mat-datepicker-toggle matSuffix [for]="licenceExpiry"></mat-datepicker-toggle>
+                            <mat-datepicker #licenceExpiry></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <mat-form-field class="example-chip-list no-gap" appearance="outline">
+                            <mat-label>License Class</mat-label>
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let class of licenseClassSetList" (removed)="removeLicenceClass(class)">
+                                    {{class.className}}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                                <input placeholder="license class" #fruitInput [formControl]="fruitCtrl" [matAutocomplete]="auto5" [matChipInputFor]="chipList"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addLicenseClass($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="selectedLicenceClass($event)">
+                                <mat-option *ngFor="let licenceClass of licenceClassListData" [value]="licenceClass">
+                                    {{licenceClass.className}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</form>
+<!-- </div>
+    </div> -->

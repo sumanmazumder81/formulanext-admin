@@ -1,0 +1,475 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; 
+    font-size:1rem;
+}
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+ul{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+a{
+    text-decoration: none;
+}
+span{
+    display: inline-block;
+}
+$primary_color: #F48634;
+$secondary_color: #35363A;
+$sub_secondary_color: #199F76;
+$denger_color: #e72950;
+$gray_color: #c9c9c9;
+
+$normal_font: 16px;
+
+
+input{text-transform: uppercase;}
+// side-panel
+.sidebar.full-width{
+    width: 14% !important;
+    .sidebar-sticky{
+        ul{
+            li{
+                a{
+                    span{
+                        // display: block !important;
+                        left: 56px !important;
+                        width: 100% !important;
+                        opacity: 1 !important;
+                    }
+                }
+            }
+        }
+    }
+    .icon-logo{
+        opacity: 0;
+    }
+    .hover-logo{
+        opacity: 1 !important;
+    }
+}
+
+
+.heading{
+    h2{
+        font-size: 16px;
+        color: $primary_color;
+    }
+    p{
+        font-size: $primary_color;
+    }
+}
+.mat-table.cdk-table{
+    width: 100%;
+}
+
+@mixin btn_style($bg_color, $color, $padding){
+    background-color: $bg_color;
+    color: $color;
+    font-size: 15px;
+    padding: $padding;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border:1px solid $bg_color;
+    &:hover{
+        background-color: #fff;
+        box-shadow: 0px 5px 12px #f4863424;
+        color: $primary_color;
+
+    }
+}
+%border-radius{
+    border-radius: 5px;
+}
+
+.mat-button.mat-button-disabled.mat-button-disabled{
+    background-color: #ffffff;
+    color: #cdcdcd;
+    border:1px solid #cdcdcd;
+}
+.search_list.mat-form-field-appearance-outline .mat-form-field-wrapper{
+    padding-bottom: 0px;
+}
+
+// user entity scss
+.custom-form {
+    .mat-form-field-suffix{
+        mat-icon{
+            top:6px;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            display: inline-block;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            float: left;
+            img{
+                width: 20px;
+            }
+        }
+    }
+    
+}
+.login{
+    mat-icon{
+        top:-5px;
+        position: relative;
+    }
+}
+
+
+// tab css
+.tabCustomClass{
+    padding-left: 30px;
+
+    .mat-tab-link{
+        position: relative;
+        opacity: 1;
+        &:after{
+            content:'';
+            position: absolute;
+            width: 100%;
+            bottom: 0px;
+            background-color: $sub_secondary_color;
+            border-radius: 10px 10px 0px 0px;
+            display: none;
+            height: 3px;
+        }
+    }
+    .active-link.mat-tab-link {
+        color: $sub_secondary_color;
+        // border-bottom:3px solid $secondary_color;
+        &:after{
+            display: block;
+        }
+    }
+
+}
+
+// add plus icon
+.addList{
+    width: 50px;
+    height: 50px;
+    background-color: $sub_secondary_color;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 60px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // position: relative;
+    z-index: 2;
+    cursor: pointer;
+    &::before{
+        content:'';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(25,159,118,0.2);
+        transform: scale(1);
+        animation: circle infinite 2s;
+        animation-timing-function: ease-out;
+        z-index: 1;
+        border-radius: 50%;
+    }
+    &::after{
+        content:'';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(25,159,118,0.2);
+        transform: scale(1);
+        animation: circle infinite 9s;
+        border-radius: 50%;
+        animation-timing-function: ease-out;
+    }
+}
+@keyframes circle{
+    0%{transform: scale(1); opacity: 1;}
+    100%{transform: scale(1.9); opacity: 0;}
+}
+
+
+// header css
+header{
+    padding: 5px 0px 5px 30px;
+    background-color: white;
+    border-bottom: 1px solid $gray_color;
+    width: 100%;
+    float: left;
+    h1.title{
+        font-weight: 600;
+        font-size: 24px;
+        color: $primary_color;
+        margin-bottom: 0px;
+    }
+    p{
+        font-size: 14px;
+        margin-bottom: 0px;
+    }
+    .notification{
+        margin-right: 15px;
+        span{
+            background-color: $primary_color;
+            border-radius: 3px;
+            color: #fff;
+            line-height: 10px;
+            padding: 5px 8px 4px;
+            position: relative;
+            left: -11px;
+            top: -6px;
+            font-size: 12px;
+            border: 2px solid #fff;
+        }
+    }
+    .profile {
+        .profile-image{
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 10px 15px #c9c9c9;
+            margin-right: 15px;
+        }
+        p{
+            font-weight: 600;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button{
+            background-color: transparent;
+            border:0px;
+        }
+    }
+}
+
+// right body css
+.totalBody{
+    padding-left: 30px;
+    width: 100%;
+    float: left;
+    background-color: #f1f1f1;
+    // height: 100vh;
+    min-height: 100vh;
+}
+.routingComponent{
+    width: 100%;
+    float: left;
+}
+
+.list{
+    width: 100%;
+    float: left;
+}
+
+.withoutArrow{
+    .mat-row{
+        &:after{
+            display: none;
+        }
+    }
+}
+
+ngx-skeleton-loader .loader{
+    background: #ffffff !important;
+    height: 50px !important;
+    border-radius: 10px !important;
+
+}
+ngx-skeleton-loader .loader.progress:before{
+    background-image: linear-gradient(to right, #ffffff, #fbfbfb, #f7f7f7, #f4f4f4, #f0f0f0, #f0f0f0, #f0f0f0, #f0f0f0, #f4f4f4, #f7f7f7, #fbfbfb, #ffffff) !important;
+    width: 300px !important;
+    background-size: 300px 100% !important;
+}
+
+// common css
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick{
+    color: $sub_secondary_color !important;
+}
+.mat-form-field.mat-focused .mat-form-field-label{
+    color: $sub_secondary_color;
+}
+
+
+// form header
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0px;
+    h3{
+      font-size: 16px;
+      text-transform: uppercase;
+      margin-bottom: 0px;
+      font-weight: 600;
+    }
+}
+
+.mat-paginator {
+    display: block;
+    position: fixed;
+    width: 96%;
+    right: 0px;
+    bottom: 0px;
+    box-shadow: 0px 0px 30px #f1f1f1;
+    .mat-paginator-container{
+        justify-content: space-between;
+    }
+    .mat-form-field-infix{
+        padding-top: 0px;
+    }
+    .mat-paginator-page-size-select{
+        margin-top: 0px;
+    }
+}
+
+// spapper css
+.mat-stepper-horizontal, .mat-stepper-vertical{
+    background-color: transparent;
+}
+.mat-step-label{
+    .mat-step-text-label{
+        font-size: 15px;
+        text-transform: uppercase;
+    }
+}
+.mat-horizontal-content-container{
+    padding-bottom: 0px;
+}
+.mat-step-icon{
+    background-color: $sub_secondary_color !important;
+    width: 30px !important;
+    height: 30px !important;
+}
+.mat-stepper-horizontal-line{
+    border:1px dashed #8F8F8F;
+    position: relative;
+    &:after{
+        content: '';
+        width: 20px;
+        height: 20px;
+        border:4px solid #EFEFEF;
+        background-color: $sub_secondary_color;
+        border-radius: 50%;
+        left:0px;
+        right: 0px;
+        margin:0 auto;
+        display: inline-block;
+        position: absolute;
+        top:-10px;
+    }
+}
+.btn_sticky{
+    background: #fff;
+    width: 100%;
+    padding: 10px 0px;
+    @extend %border-radius
+}
+.save{
+    @include btn_style($bg_color: $primary_color, $color : #ffffff, $padding: 0px 30px !important);
+    float: right;
+    margin-right: 10px !important;
+}
+
+.loader{
+    position: fixed;
+    z-index: 9999;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    left:0px;
+}
+.mat-progress-spinner circle, .mat-spinner circle{
+    stroke: #ffffff;
+}
+
+.custom-form h3{text-align: left; font-weight: 500; font-size: 17px;}
+
+
+.btn {
+    border: none;
+    background-color: inherit;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .success {color: green;}
+  .danger {color: red;}
+
+  .header-right{
+    //   .mat-form-field-outline{
+          .mat-form-field-infix{
+              display: flex !important;
+              mat-icon{
+                color: #F48634 !important;
+              }
+          }
+    //   }
+  }
+  .mat_menu{
+    mat-icon{
+        img{
+            margin-top: -10px;
+        }
+    }
+  }
+  .noDataFound{
+      img{
+          width: 20%;
+      }
+      p{
+          font-weight: 600;
+          font-size: 16px;
+          margin-top: 15px;
+          color: $secondary_color;
+      }
+  }
+
+.owner_list{
+    mat-row{
+        
+    }
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: rgba(25,159, 118,.54);
+}
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: #199f76;
+}
+.delete_confermation{
+    position: absolute;
+    width: 30%;
+    // height: 15%;
+    background: #35363A;
+    z-index: 999;
+    // bottom: 15px;
+    padding: 30px;
+    top:45%;
+    left:0;
+    right:0;
+    margin:0 auto;
+    text-align: center;
+    p{
+        color: #ffffff;
+        font-size: 16px;
+        margin-bottom: 30px;
+        font-weight: 300;
+        display: inline-block;
+        width: 100%;
+        float: left;
+    }
+    a{
+        @include btn_style($bg_color:$primary_color, $color:#ffffff, $padding:10px 20px);
+        margin-top: 15px;
+        margin-right: 5px;
+    }
+}

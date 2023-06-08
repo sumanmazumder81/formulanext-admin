@@ -1,0 +1,36 @@
+<!-- <p>variant-entity works!</p> -->
+<div class="loader" *ngIf="loader">
+        <mat-spinner></mat-spinner>
+    </div>
+<Vehicles-app></Vehicles-app>
+<div class="list">
+    <div class="header">
+        <h3>Vehicles varient add </h3>
+    </div>
+    <div class="custom-form">
+        <form [formGroup]="vehiclesVariantFrom" class="row justify-content-center">
+            <div class="col-lg-5 form-field-bg">
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle variant name</mat-label>
+                    <input matInput placeholder="Vehicle name" id="name" name="name" formControlName="name">
+                    <mat-icon matSuffix>
+                        <img src="./assets/images/chassies-icon.svg"/>
+                    </mat-icon>
+                    <mat-error *ngIf="vehiclesVariantFrom?.get('name').errors?.required">
+                        Vehices variant name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <div class="text-center">
+                    <a *ngIf="!varientId"mat-button class="save" 
+                    (click)="vehiclesVariantAdd()" 
+                    [disabled]="!vehiclesVariantFrom.valid"
+                    >Submit</a>
+                    <a *ngIf="varientId" mat-button class="save" 
+                    (click)="editVarient()" 
+                    [disabled]="!vehiclesVariantFrom.valid"
+                    >Save</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

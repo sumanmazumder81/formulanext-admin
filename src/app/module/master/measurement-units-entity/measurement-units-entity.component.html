@@ -1,0 +1,32 @@
+<!-- <p>measurement-units-entity works!</p> -->
+<master-app></master-app>
+<div class="loader" *ngIf="loader">
+    <mat-spinner></mat-spinner>
+</div>
+<div class="list">
+    <div class="header">
+        <h3>Measurement unit add </h3>
+    </div>
+    <div class="custom-form">
+        <form [formGroup]="measurementUnitFrom" class="row justify-content-center">
+            <div class="col-lg-5 form-field-bg">
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle unit</mat-label>
+                    <input matInput placeholder="Vehicle class name" id="unit" name="unit" formControlName="unit">
+                    <mat-icon matSuffix>
+                        <img src="./assets/images/chassies-icon.svg" />
+                    </mat-icon>
+                    <mat-error *ngIf="measurementUnitFrom?.get('unit')?.errors?.required">
+                        Unit is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="text-center">
+
+                    <a *ngIf="!measurementId" mat-button class="save" (click)="measurementUnitAdd()" [disabled]="measurementUnitFrom.invalid">Submit</a>
+                    <a *ngIf="measurementId" mat-button class="save" (click)="editMeasurementUnit()" [disabled]="measurementUnitFrom.invalid">Save</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

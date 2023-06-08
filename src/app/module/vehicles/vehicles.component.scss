@@ -1,0 +1,41 @@
+
+@import '../../../styles.scss';
+
+
+.list{
+    padding: 0px 30px;
+}
+
+.mat-row.example-detail-row {
+    min-height: 0;
+  }
+
+.mat-form-field{
+    width: 100%;
+}
+
+.padding-left{
+    padding-left: 15px;
+}
+.padding-right{
+    padding-right: 15px;
+}
+
+.mat-chip.mat-standard-chip{
+    background-color: $sub_secondary_color;
+    color: #ffffff;
+}
+  
+  .full-width {
+    width: 100%;
+  }
+  .vehicles_form{
+    .no-gap{
+    .mat-form-field-wrapper{
+        
+            margin-bottom: 0px !important;
+            padding-bottom: 0px !important;
+        }
+    
+    }
+}

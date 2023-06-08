@@ -1,0 +1,26 @@
+
+.internet_connection{
+ position: fixed;
+ z-index: 999;
+ width: 100%;
+ top:0px;
+ left:0px;   
+}
+.offline{
+  background-color: rgb(231, 14, 14);
+  text-align: center;
+  color: #ffffff;
+  padding: 5px 0px;
+}
+.status {
+    background-color: #11d411;
+    text-align: center;
+    padding: 10px;
+    color: #fff;
+    transition: background-color 1s ease;
+  }
+  
+  .status.offline {
+    background-color: rgb(231, 14, 14);
+  }
+  

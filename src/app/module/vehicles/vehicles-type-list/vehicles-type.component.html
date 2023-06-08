@@ -1,0 +1,11 @@
+<!-- <p>vehicles-type works!</p> -->
+<div class="loader" *ngIf="loader">
+    <mat-spinner ></mat-spinner>
+</div>
+<Vehicles-app></Vehicles-app>
+<div class="list">
+        <app-list-of-table [allTableData]="allTableData" [tableHeaderData]="displayedColumns" [pageTitle]="pageTitle" [entityType]="'vehicles type'" (tableDeleteId)="delete($event)" (tableEditId)="edit($event)"></app-list-of-table>
+    <a class="addList" [routerLink]="['/dashboard/vehicles/vehiclesType/typeEntity']">
+        <img src="assets/images/feather-plus.svg" />
+    </a>
+</div>

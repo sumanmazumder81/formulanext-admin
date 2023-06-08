@@ -1,0 +1,7 @@
+@import '../vehicles.component.scss';
+.form-field-bg{
+    background: #ffffff;
+    @extend %border-radius;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

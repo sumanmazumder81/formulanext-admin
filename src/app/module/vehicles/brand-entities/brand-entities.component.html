@@ -1,0 +1,37 @@
+
+<div class="loader" *ngIf="loader">
+        <mat-spinner></mat-spinner>
+    </div>
+<!-- <Vehicles-app></Vehicles-app> -->
+<div class="list">
+    <div class="header">
+        <h3>Vehicles Brand add</h3>
+    </div>
+    <div class="custom-form">
+        <form [formGroup]="brandFrom" class="row justify-content-center">
+            <div class="col-lg-5 form-field-bg">
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle brand name</mat-label>
+                    <input matInput placeholder="Vehicle brand name" id="fullName" name="name" formControlName="name">
+                    <mat-icon matSuffix>
+                        <img src="./assets/images/chassies-icon.svg"/>
+                    </mat-icon>
+                    <mat-error *ngIf="brandFrom?.get('name').errors?.required">
+                        Vehicles brand name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <div class="text-center">
+
+                    <a *ngIf="!brandId" mat-button class="save" 
+                    (click)="saveBrandAdd()" 
+                    [disabled]="!brandFrom.valid"
+                    >Submit</a>
+                    <a *ngIf="brandId" mat-button class="save" 
+                    (click)="editBrand()" 
+                    [disabled]="!brandFrom.valid"
+                    >Save</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

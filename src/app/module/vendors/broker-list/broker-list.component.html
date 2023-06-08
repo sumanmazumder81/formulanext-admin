@@ -1,0 +1,9 @@
+<vendors-root></vendors-root>
+<div class="loader" *ngIf="loader">
+    <mat-spinner ></mat-spinner>
+</div>
+<div class="list">
+    <app-list-of-table [allTableData]="allTableData" [pageSize]="pageSize" [isCallFromBackend]="true" [pageIndex]="pageIndex" [dataLength]="dataLength" (setpagination)="setPegination($event)" [tableHeaderData]="displayedColumns" [pageTitle]="pageTitle" [entityType]="'broker'" (tableDeleteId)="delete($event)" (tableEditId)="edit($event)" (search)="search($event)"></app-list-of-table>
+    <!-- <a class="addList" [routerLink]="['/dashboard/vendor/userEntity']" (click)="added('broker')"><img src="assets/images/feather-plus.svg"/></a> -->
+    <a class="addList" (click)="added('broker')"><img src="assets/images/feather-plus.svg"/></a>
+</div>

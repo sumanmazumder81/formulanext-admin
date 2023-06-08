@@ -1,0 +1,62 @@
+<header>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <h1 class="title">Vendors</h1>
+        <!-- <p>Total 105 vendors data are there</p> -->
+      </div>
+      <div class="col-lg-6 col-md-6 text-lg-right text-center justify-content-lg-end d-flex align-items-center">
+        <div class="notification">
+          <img src="../../../assets/images/bell.svg" alt="">
+          <span>10+</span>
+        </div>
+        <div class="profile d-flex align-items-center">
+          <div class="profile-image">
+            <img src="../../../assets/images/profile-image.png" alt="">
+          </div>
+          <p>Arju Meheta</p>
+          <button mat-button [matMenuTriggerFor]="menu"><img src="../../../assets/images/down-arrow.svg" alt=""></button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>Profile</button>
+            <button mat-menu-item>Log out</button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="routingComponent">
+
+<nav mat-tab-nav-bar class="tabCustomClass">
+  <a mat-tab-link routerLink="/dashboard/vendors/broker" routerLinkActive="active-link"> Broker </a>
+  <a mat-tab-link routerLink="/dashboard/vendors/driver" routerLinkActive="active-link"> Driver </a>
+  <a mat-tab-link routerLink="/dashboard/vendors/owner" routerLinkActive="active-link"> Owner </a>
+  <router-outlet></router-outlet>
+</nav>
+</div>
+
+
+<!-- <mat-tab-group dynamicHeight>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Owner
+    </ng-template>
+    <app-owner-list></app-owner-list>
+  </mat-tab>
+
+
+  <mat-tab>
+      <ng-template mat-tab-label>
+        Broker
+      </ng-template>
+
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+      Driver
+      </ng-template>
+      
+    </mat-tab>
+</mat-tab-group> -->
+
+

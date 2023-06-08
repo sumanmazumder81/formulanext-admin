@@ -1,0 +1,534 @@
+<div class="loader" *ngIf="loader">
+    <mat-spinner></mat-spinner>
+</div>
+<Vehicles-app></Vehicles-app>
+<div class="list">
+    <mat-stepper [linear]="true" #stepper >
+        <mat-step state="first"
+        [completed]="isComplete"
+        [editable]="true" label="Vehicles Add">
+            <div class="custom-form vehicles_form">
+                <form [formGroup]="vehiclesFrom" class="row justify-content-center">
+                    <div class="col-lg-12 mb-5">
+                        <div class="form-field-bg padding-left padding-right mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-lg-3">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Vehicle Type</mat-label>
+                                        <mat-select formControlName="vehicleTypeId" (focus)="search.value = ''">
+                                            <mat-optgroup>
+                                                <mat-form-field style="width:100%;">
+                                                    <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" #search>
+                                                    <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.value = ''">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-form-field>
+                                            </mat-optgroup>
+                                            <mat-option *ngFor="let vehicleTypeList of vehicleTypeList | filter:search.value:'name'" [value]="vehicleTypeList.id">{{vehicleTypeList.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="vehiclesFrom?.get('vehicleTypeId').errors?.required">
+                                                Vehicle Type is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-3">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Vehicle Variant</mat-label>
+                                        <mat-select formControlName="vehicleVariantId" (focus)="searchver.value = ''">
+                                            <mat-optgroup>
+                                                <mat-form-field style="width:100%;">
+                                                    <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" #searchver>
+                                                    <button [disableRipple]="true" *ngIf="searchver.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchver.value = ''">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-form-field>
+                                            </mat-optgroup>
+                                            <mat-option *ngFor="let vehiclesVariantListed of vehiclesVariantListed | filter:searchver.value:'name'" [value]="vehiclesVariantListed.id">{{vehiclesVariantListed.name}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="vehiclesFrom?.get('vehicleVariantId').errors?.required">
+                                                Vehicle variant is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-3">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Ownership</mat-label>
+                                        <mat-select matNativeControl formControlName="ownership" name="ownership">
+
+                                            <mat-option *ngFor="let ownership of ownership" [value]="ownership.value">
+                                                {{ownership.viewValue}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="vehiclesFrom?.get('ownership').errors?.required">
+                                                Ownership is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-3">
+                                    <mat-form-field appearance="outline" formGroupName="driver">
+                                        <mat-label>Add driver</mat-label>
+                                        <mat-select formControlName="driverId" (focus)="searchDriver.value = ''">
+                                            <mat-optgroup>
+                                                <mat-form-field style="width:100%;">
+                                                    <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" (input)="driverFilter($event.target.value)"
+                                                        #searchDriver>
+                                                    <button [disableRipple]="true" *ngIf="searchDriver.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchDriver.value = '';driverFilter('')">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                    <mat-error *ngIf="vehiclesFrom?.get('driver')?.get('driverId').errors?.required">
+                                                            Driver id is <strong>required</strong>
+                                                        </mat-error>
+                                                </mat-form-field>
+                                            </mat-optgroup>
+                                            <mat-option *ngIf="!driverOption.length"> No data available </mat-option>
+                                            <mat-option *ngFor="let driver of driverOption" [value]="driver.id">{{driver.userEntity.fullName}} ({{driver.meta.VendorCode}})</mat-option>
+                                        </mat-select>
+                                        
+                                    </mat-form-field>
+                                </div>
+                                <!-- as per sir Requirment -->
+                                <!-- <div class="col-lg-10">
+                                    <mat-form-field class="example-chip-list no-gap" appearance="outline">
+                                        <mat-label>Licence Class</mat-label>
+                                        <mat-chip-list #chipList>
+                                            <mat-chip *ngFor="let class of licenseClassSetList" (removed)="removeLicenceClass(class)">
+                                                {{class.className}}
+                                                <button matChipRemove>
+                                                    <mat-icon>cancel</mat-icon>
+                                                </button>
+                                            </mat-chip>
+                                            <input placeholder="licence class" #fruitInput [formControl]="fruitCtrl" [matAutocomplete]="auto5" [matChipInputFor]="chipList"
+                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addLicenseClass($event)">
+                                        </mat-chip-list>
+                                        <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="selectedLicenceClass($event)">
+                                            <mat-option *ngFor="let licenceClass of licenceClassListData" [value]="licenceClass">
+                                                {{licenceClass.className}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div> -->
+                                <div class="col-lg-2" *ngIf="editVehiclesId">
+                                    <label for="" style="margin-right: 5px; display: inline-block;">Vehicles Status:</label>
+                                    <mat-slide-toggle formControlName="isActive"></mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-field-bg padding-left padding-right mb-3">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Engine No</mat-label>
+                                        <input type="text" matInput placeholder="Engine No" name="engineNo" formControlName="engineNo">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/engine-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('engineNo').errors?.required">
+                                                Engine No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <div class="col-lg-4">
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Plate No</mat-label>
+                                        <input type="text" matInput placeholder="Plate No" name="plateNo" formControlName="plateNo">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/plate-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('plateNo').errors?.required">
+                                                Plate No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div> -->
+                                <div class="col-lg-6">
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Chassis No</mat-label>
+                                        <input type="text" matInput placeholder="Chassis No" name="chassisNo" formControlName="chassisNo">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/chassies-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('chassisNo').errors?.required">
+                                                Chassis No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-field-bg padding-left padding-right mb-3" formGroupName="vehiclesAge">
+                            <div class="row align-items-center">
+                                <div class="col-lg-12 d-flex align-items-center justify-content-between">
+                                    <h3>Vehicles age</h3>
+                                    <p class="v_age">Total age:
+                                        <span>{{vehicalAgeinYear}}</span>
+                                    </p>
+                                </div>
+                                <div class="col-lg-4">
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Vehicles/Register Number</mat-label>
+                                        <input type="text" matInput placeholder="Vehicle Age" name="registerNumber" formControlName="registerNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/vehicles-age.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('vehiclesAge')?.get('registerNumber').errors?.required">
+                                                Register number is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-4">
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Registration date</mat-label>
+                                        <input matInput [matDatepicker]="registerDate" formControlName="registerDate" name="registerDate" [max]="newDate" (dateChange)="setExpireDate($event)">
+                                        <mat-datepicker-toggle matSuffix [for]="registerDate"></mat-datepicker-toggle>
+                                        <mat-datepicker #registerDate></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('vehiclesAge')?.get('registerDate').errors?.required">
+                                                Register number is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-lg-4">
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Expire date</mat-label>
+                                        <input matInput [matDatepicker]="expireDate" formControlName="expireDate" name="expireDate" [min]="newDate">
+                                        <mat-datepicker-toggle matSuffix [for]="expireDate"></mat-datepicker-toggle>
+                                        <mat-datepicker #expireDate></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('vehiclesAge')?.get('expireDate').errors?.required">
+                                                Register number is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <div class="col-lg-1 text-center">
+                                        <button mat-button (click)="getVehiclesAge()" class="view">Get age</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4" >
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <div formGroupName="broker">
+                                        <h3>Broker & Driver add</h3>
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Add vehicles Owner</mat-label>
+                                            <mat-select formControlName="ownerId" (focus)="searchowner.value = ''">
+                                                <mat-optgroup>
+                                                    <mat-form-field style="width:100%;">
+                                                        <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" (input)="ownerFilter($event.target.value)"
+                                                            #searchowner>
+                                                        <button [disableRipple]="true" *ngIf="searchowner.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchowner.value = '';ownerFilter('')">
+                                                            <mat-icon>close</mat-icon>
+                                                        </button>
+                                                    </mat-form-field>
+                                                </mat-optgroup>
+                                                <mat-option *ngIf="!OwnerOptions.length">No Data Availavle</mat-option>
+                                                <mat-option *ngFor="let owner of OwnerOptions" [value]="owner.id">{{owner.userEntity.fullName}} ({{owner.meta.VendorCode}})</mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="vehiclesFrom?.get('ownerId').errors?.required">
+                                                    Owner id is <strong>required</strong>
+                                                </mat-error>
+                                        </mat-form-field>
+                                    
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Broker</mat-label>
+                                            <mat-select formControlName="brokerId">
+                                                <mat-optgroup>
+                                                    <mat-form-field style="width:100%;">
+                                                        <input matInput placeholder="Search" name="search" class="col-sm-12 col-md-12 col-lg-12" (input)="brokerFilter($event.target.value)"
+                                                            #searchbroker>
+                                                        <button [disableRipple]="true" *ngIf="searchbroker.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchbroker.value = '';brokerFilter('')">
+                                                            <mat-icon>close</mat-icon>
+                                                        </button>
+                                                        <mat-error *ngIf="vehiclesFrom?.get('broker')?.get('brokerId').errors?.required">
+                                                                Brokers id is <strong>required</strong>
+                                                            </mat-error>
+                                                    </mat-form-field>
+                                                </mat-optgroup>
+                                                <mat-option *ngIf="!brokersOption.length"> No data available </mat-option>
+                                                <mat-option *ngFor="let broker of brokersOption" [value]="broker.id">{{broker.userEntity.fullName}} ({{broker.meta.VendorCode}})</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-lg-4" formGroupName="fitnessCertificated">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <h3>Fitness Certificated</h3>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Fitness number</mat-label>
+                                        <input type="text" matInput placeholder="Fitness number" name="fitnessNumber" formControlName="fitnessNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/fitness-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('fitnessCertificated')?.get('fitnessNumber').errors?.required">
+                                                Fitness number is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Fitness Expiry</mat-label>
+                                        <input matInput [matDatepicker]="fitnessExpiry" formControlName="expireDate" datePickerFormat="DD/MM/YYYY" name="expireDate">
+                                        <mat-datepicker-toggle matSuffix [for]="fitnessExpiry"></mat-datepicker-toggle>
+                                        <mat-datepicker #fitnessExpiry></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('fitnessCertificated')?.get('expireDate').errors?.required">
+                                                Fitness number is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" formGroupName="insuranceNumber">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <h3>Insurance</h3>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Insurance number</mat-label>
+                                        <input type="text" matInput placeholder="Insurance number" name="insuranceNumber" formControlName="insuranceNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/insurance-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('insuranceNumber')?.get('insuranceNumber').errors?.required">
+                                                Insurance number is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Insurance Expiry</mat-label>
+                                        <input matInput [matDatepicker]="insuranceExpiry" formControlName="expireDate" datePickerFormat="DD/MM/YYYY" name="expireDate">
+                                        <mat-datepicker-toggle matSuffix [for]="insuranceExpiry"></mat-datepicker-toggle>
+                                        <mat-datepicker #insuranceExpiry></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('insuranceNumber')?.get('expireDate').errors?.required">
+                                                Insurance expiry is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4" formGroupName="rcPermit">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <h3>Permit</h3>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Permit No</mat-label>
+                                        <input type="text" matInput placeholder="RC No" name="rcNumber" formControlName="rcNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/chassies-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('rcPermit')?.get('rcNumber').errors?.required">
+                                                Permit No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" >
+                                        <mat-label>Permit Expiry</mat-label>
+                                        <input matInput [matDatepicker]="rcExpiry" formControlName="expireDate" name="expireDate">
+                                        <mat-datepicker-toggle matSuffix [for]="rcExpiry"></mat-datepicker-toggle>
+                                        <mat-datepicker #rcExpiry></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('rcPermit')?.get('expireDate').errors?.required">
+                                                Permit Expiry is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" formGroupName="nationalPermit">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <h3>National Permit number</h3>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>National Permit No</mat-label>
+                                        <input type="text" matInput placeholder="National Permit No" name="nationalNumber" formControlName="nationalNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/chassies-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('nationalPermit')?.get('nationalNumber').errors?.required">
+                                                National Permit No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" >
+                                        <mat-label>National Permit Expiry</mat-label>
+                                        <input matInput [matDatepicker]="nationalPermitExpiry" formControlName="expireDate" name="expireDate">
+                                        <mat-datepicker-toggle matSuffix [for]="nationalPermitExpiry"></mat-datepicker-toggle>
+                                        <mat-datepicker #nationalPermitExpiry></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('nationalPermit')?.get('expireDate').errors?.required">
+                                                National Permit Expiry is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" formGroupName="roadTax">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <h3>Road tax</h3>
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Road tax No</mat-label>
+                                        <input type="text" matInput placeholder="Road tax No" name="roadNumber" formControlName="roadNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/road-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('roadTax')?.get('roadNumber').errors?.required">
+                                                Road tax No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="">
+                                        <mat-label>Road Expiry</mat-label>
+                                        <input matInput [matDatepicker]="roadExpiry" formControlName="expireDate" name="expireDate">
+                                        <mat-datepicker-toggle matSuffix [for]="roadExpiry"></mat-datepicker-toggle>
+                                        <mat-datepicker #roadExpiry></mat-datepicker>
+                                        <mat-error *ngIf="vehiclesFrom?.get('roadTax')?.get('expireDate').errors?.required">
+                                                Road Expiry is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field>
+                                    <!-- <mat-form-field appearance="outline" class="no-gap">
+                                        <mat-label>Reference number</mat-label>
+                                        <input matInput type="text" formControlName="refNumber" name="refNumber">
+                                        <mat-icon matSuffix>
+                                            <img src="./assets/images/refnumber-icon.svg" />
+                                        </mat-icon>
+                                        <mat-error *ngIf="vehiclesFrom?.get('roadTax')?.get('refNumber').errors?.required">
+                                                Road tax No is <strong>required</strong>
+                                            </mat-error>
+                                    </mat-form-field> -->
+                                </div>
+                            </div>
+                            <div class="col-lg-12" formGroupName="pollutionNumber">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <h3>Pollution number</h3>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>Certified number</mat-label>
+                                                <input type="text" matInput placeholder="certified number" name="certifiedNumber" formControlName="certifiedNumber">
+                                                <mat-icon matSuffix>
+                                                    <img src="./assets/images/pollution-icon.svg" />
+                                                </mat-icon>
+                                                <mat-error *ngIf="vehiclesFrom?.get('pollutionNumber')?.get('certifiedNumber').errors?.required">
+                                                        Certified number is <strong>required</strong>
+                                                    </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>Expiry date</mat-label>
+                                                <input matInput [matDatepicker]="pollutionExpireDate" formControlName="expireDate" name="expireDate" placeholder="Expiry date">
+                                                <mat-datepicker-toggle matSuffix [for]="pollutionExpireDate"></mat-datepicker-toggle>
+                                                <mat-datepicker #pollutionExpireDate></mat-datepicker>
+                                                <mat-error *ngIf="vehiclesFrom?.get('pollutionNumber')?.get('expireDate').errors?.required">
+                                                        Expiry date is <strong>required</strong>
+                                                    </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12" formGroupName="emiGroup">
+                                <div class="form-field-bg padding-left padding-right mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <h3>EMI group</h3>
+                                        <mat-slide-toggle formControlName="isEmi" (change)="emiGroupdd($event)" [checked]="checkStatus">Emi there</mat-slide-toggle>
+                                    </div>
+                                    <div class="row" *ngIf="emiStatus">
+                                        <div class="col-lg-3">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>EMI No</mat-label>
+                                                <input type="text" appOnlyNumber="true" matInput placeholder="EMI No" name="emiNumber" formControlName="emiNumber">
+                                                <mat-icon matSuffix>
+                                                    <img src="./assets/images/emi-group.svg" />
+                                                </mat-icon>
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>EMI total months</mat-label>
+                                                <input type="text" appOnlyNumber="true" matInput placeholder="EMI Months" name="emiMonths" formControlName="emiMonths">
+                                                <mat-icon matSuffix>
+                                                    <img src="./assets/images/chassies-icon.svg" />
+                                                </mat-icon>
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>EMI paid months</mat-label>
+                                                <input type="text" appOnlyNumber="true" matInput placeholder="EMI Months" name="emiPaidMonths" formControlName="emiPaidMonths">
+                                                <mat-icon matSuffix>
+                                                    <img src="./assets/images/chassies-icon.svg" />
+                                                </mat-icon>
+
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>Last EMI payment date</mat-label>
+                                                <input matInput [matDatepicker]="LastEmiPaymentDates" formControlName="LastEmiPaymentDate" name="LastEmiPaymentDate" placeholder="Last EMI payment date">
+                                                <mat-datepicker-toggle matSuffix [for]="LastEmiPaymentDates"></mat-datepicker-toggle>
+                                                <mat-datepicker #LastEmiPaymentDates></mat-datepicker>
+                                                <mat-error *ngIf="vehiclesFrom?.get('emiGroup')?.get('LastEmiPaymentDate').errors?.required">
+                                                    Last EMI payment date <strong>required</strong>
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-field-bg padding-left padding-right mb-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3>Others</h3>
+                                    <a (click)="addItem()" class="addContact" [style.cursor]="pointer">
+                                        <img src="./assets/images/add-icon.svg" />
+                                    </a>
+                                </div>
+                                <div class="" *ngIf="otherDocumentStatus">
+                                    <div class="row" *ngFor="let item of this.vehiclesFrom.get('others')['controls']; let i = index;" [formGroup]="item">
+                                        <div class="col-lg-4">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>Document Name</mat-label>
+                                                <input type="type" matInput placeholder="Document Name" name="documentName" formControlName="documentName">
+                                                <mat-icon matSuffix>
+                                                    <img src="./assets/images/document-icon.svg" style="width: 14px;" />
+                                                </mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>Document Number</mat-label>
+                                                <input matInput formControlName="documentNumber" name="documentNumber" type="text" placeholder="Document Number">
+                                                <mat-icon matSuffix>
+                                                    <img src="./assets/images/document-icon.svg" style="width: 14px;" />
+                                                </mat-icon>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <mat-form-field appearance="outline" class="">
+                                                <mat-label>Expiry Date</mat-label>
+                                                <input matInput [matDatepicker]="expireDate" formControlName="expireDate" name="expireDate">
+                                                <mat-datepicker-toggle matSuffix [for]="expireDate"></mat-datepicker-toggle>
+                                                <mat-datepicker #expireDate></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <a (click)="deleteOtherInformation(i)" class="delete_document"><img src="./assets/images/delete-white.svg"/></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+                <div class="row justify-content-end">
+                    <div class="col-lg-12 btn_sticky ">
+                        <button mat-button matStepperNext class="save" (click)="vehiclesFromAdd(stepper)" *ngIf="!editVehiclesId" [disabled]="vehiclesFrom.invalid">Next
+                            <img src="./assets/images/right-arrow-icon.svg" />
+                        </button>
+                        <!-- <button mat-button matStepperNext class="save" (click)="vehiclesFromAdd()" *ngIf="!editVehiclesId">Next
+                            <img src="./assets/images/right-arrow-icon.svg" />
+                        </button> -->
+                        <button mat-button matStepperNext class="save" *ngIf="editVehiclesId" (click)="VehiclesEdit(stepper)" [disabled]="vehiclesFrom.invalid">Save
+                            <img src="./assets/images/right-arrow-icon.svg" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step  state="final" label="Document Upload">
+            <app-user-entity-document [entityType]="vehiclePage" [entityId]="vehiclesId" [ownerData]="vehicalData"></app-user-entity-document>
+        </mat-step>
+    </mat-stepper>
+
+
+</div>

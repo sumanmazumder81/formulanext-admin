@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="18.458" viewBox="0 0 24 18.458">
+    <g transform="translate(-184 -170)">
+        <path data-name="Path 332" d="M931.375-121.125s-3.518.554-2.8-2.732c0-.429.714-4.571 4.571-4 .143-.143 2.857.857 6 0 0 0 4.143.143 4.429 4a2.06 2.06 0 0 1-2.134 2.732c-.003.114-10.066 0-10.066 0z" transform="translate(-744 309)" style="fill:#f48634"/>
+        <circle data-name="Ellipse 16" cx="4" cy="4" r="4" transform="translate(188 171)" style="fill:#f48634"/>
+        <g data-name="Icon awesome-user-check" style="fill:none">
+            <path d="M8.075 9.229a4.614 4.614 0 1 0-4.614-4.615 4.614 4.614 0 0 0 4.614 4.615zm3.23 1.154h-.6a6.275 6.275 0 0 1-5.256 0h-.6A4.846 4.846 0 0 0 0 15.228v1.5a1.731 1.731 0 0 0 1.73 1.73h12.69a1.731 1.731 0 0 0 1.73-1.73v-1.5a4.846 4.846 0 0 0-4.845-4.845z" style="stroke:none" transform="translate(184 170)"/>
+            <path d="M8.075 1a3.619 3.619 0 0 0-3.614 3.614A3.619 3.619 0 0 0 8.075 8.23a3.619 3.619 0 0 0 3.615-3.615A3.619 3.619 0 0 0 8.075 1m-3.23 10.383A3.85 3.85 0 0 0 1 15.228v1.5c0 .402.328.73.73.73h12.69c.403 0 .73-.328.73-.73v-1.5a3.85 3.85 0 0 0-3.845-3.845h-.391a7.236 7.236 0 0 1-2.839.576c-.977 0-1.93-.194-2.838-.576h-.392M8.075 0a4.614 4.614 0 1 1 .001 9.228 4.614 4.614 0 0 1 0-9.228zm-3.23 10.383h.602a6.282 6.282 0 0 0 5.256 0h.602a4.846 4.846 0 0 1 4.846 4.845v1.5a1.73 1.73 0 0 1-1.73 1.73H1.73A1.73 1.73 0 0 1 0 16.728v-1.5a4.846 4.846 0 0 1 4.845-4.845z" style="fill:#fff;stroke:none" transform="translate(184 170)"/>
+        </g>
+        <g data-name="Component 1 – 2" transform="translate(198.32 172.904)">
+            <rect data-name="Rectangle 19" width="9.681" height="1.936" rx=".968" transform="translate(0 3.872)" style="fill:#fff"/>
+            <rect data-name="Rectangle 20" width="9.681" height="1.936" rx=".968" transform="rotate(90 2.904 2.904)" style="fill:#fff"/>
+        </g>
+    </g>
+</svg>

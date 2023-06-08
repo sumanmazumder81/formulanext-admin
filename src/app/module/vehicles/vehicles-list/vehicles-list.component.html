@@ -1,0 +1,10 @@
+<div class="loader" *ngIf="loader">
+    <mat-spinner ></mat-spinner>
+</div>
+<Vehicles-app></Vehicles-app>
+<div class="list">
+        <app-list-of-table [allTableData]="allTableData" [tableHeaderData]="displayedColumns" [pageTitle]="pageTitle" (tableEditId)="edit($event)" (tableDeleteId)="delete($event)" [isCallFromBackend]="true" [pageIndex]="pageIndex" [pageSize]="pageSize" [dataLength]="dataLength" [entityType]="'vehicles'" (setpagination)="setPagination($event)" (search)="search($event)"></app-list-of-table>
+    <a class="addList" [routerLink]="['/dashboard/vehicles/vehicles/vehicleEntities']">
+        <img src="assets/images/feather-plus.svg" />
+    </a>
+</div>

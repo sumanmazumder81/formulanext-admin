@@ -1,0 +1,19 @@
+<!-- <p>side-panel works!</p> -->
+<div class="sidebar-sticky">
+
+    <div class="logo">
+        <img src="../../../assets/images/services-logo-dark-21.png" alt="" class="icon-logo">
+        <img src="../../../assets/images/full-logo.svg" alt="" class="hover-logo">
+    </div>
+    <ul>
+		<li *ngFor="let menu of menus">
+			<a [routerLink]="menu.link" [routerLinkActive]="['isActive']">
+				<div class="icon">
+					<img [src]="menu.image" />
+					<img [src]="menu.activeImage" class="active-icon" />
+				</div>
+				<span>{{menu.name}}</span>
+			</a>
+		</li>
+    </ul>
+</div>

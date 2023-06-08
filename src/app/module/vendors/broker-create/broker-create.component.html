@@ -1,0 +1,30 @@
+<div class="loader" *ngIf="loader">
+    <mat-spinner ></mat-spinner>
+</div>
+<vendors-root></vendors-root>
+<div class="list">
+    <mat-stepper [linear]="true" #stepper>
+        <mat-step state="first"
+        [completed]="isComplete"
+        [stepControl]="brokerFrom"
+        [editable]="true" label="Broker Add">
+            <div class="custom-form">
+                <app-user-entity [ownerFrom]="brokerFrom" [whichPage]="brokerPage" [editId]="brokerId" [isEditable]="isEditable" [tradeLicenceThere]="tradeLicenceThere" [userEntitId]="userEntitId" (companyStatusSend)="companyStatusSend($event)"></app-user-entity>
+                <div class="row justify-content-end">
+                    <div class="col-lg-12 btn_sticky" >
+                        <button mat-button matStepperNext class="save" [disabled]="brokerFrom.invalid" (click)="saveBrokerAdd()" *ngIf="!brokerId">Submit & Next
+                            <img src="./assets/images/right-arrow-icon.svg" />
+                        </button>
+                        <!-- <button mat-button matStepperNext class="save" (click)="saveBrokerAdd(stepper)" *ngIf="!brokerId">Next
+                            <img src="./assets/images/right-arrow-icon.svg" />
+                        </button> -->
+                        <button matStepperNext mat-button (click)="editBrokerEntity()" class="save"  *ngIf="brokerId && isEditable">Update & Next <img src="./assets/images/right-arrow-icon.svg" /></button>
+                    </div>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step  state="final" label="Fill out your documents">
+            <app-user-entity-document [entityType]="brokerPage" [entityId]="brokerId" [ownerData]="brokerDataGet"></app-user-entity-document>
+        </mat-step>
+    </mat-stepper>
+</div>

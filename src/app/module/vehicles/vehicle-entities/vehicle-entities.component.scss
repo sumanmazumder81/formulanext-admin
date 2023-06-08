@@ -1,0 +1,37 @@
+@import '../vehicles.component.scss';
+
+.form-field-bg{
+    background: #ffffff;
+    @extend %border-radius;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.tire_information{
+    // .tireWeight{
+    //     flex:0 0 70%;
+    //     width: 70%;
+    // }
+    // .unit{
+    //     flex:0 0 30%;
+    //     width: 30%;
+    // }
+}
+
+.v_age{
+    span{
+        color: #F48634;
+        font-size: 15px;
+        font-weight: 600;
+    }
+}
+.delete_document{
+    background-color: $denger_color;
+    width: 40px;
+    height: 58%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}

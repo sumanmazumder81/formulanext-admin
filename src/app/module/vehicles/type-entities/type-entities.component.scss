@@ -1,0 +1,15 @@
+@import '../vehicles.component.scss';
+.form-field-bg{
+    background: #ffffff;
+    @extend %border-radius;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.flex-class{
+    flex-wrap: wrap;
+}
+.view{
+    background-color: #F48634;
+    color: #ffffff;
+    font-size: 14px;
+}

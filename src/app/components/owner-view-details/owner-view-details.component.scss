@@ -1,0 +1,33 @@
+
+@import '../../../styles.scss';
+.list{
+    padding: 0px 30px;
+}
+.header_section{
+    background-color: #ffffff;
+    padding: 10px 50px;
+    box-shadow: 0px 5px 10px #f1f1f1;
+    h2{
+        margin-bottom: 0px;
+        font-size: 18px;
+        color: $primary_color;
+    }
+}
+.delete_btn{
+    background-color: $denger_color;
+    position: absolute;
+    left:9%;
+    top:7%;
+    z-index: 9999;
+    border-radius: 5px;
+    padding: 5px 30px 4px;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid $denger_color;
+    &:hover{
+        background-color: transparent;
+        color: $denger_color;
+        box-shadow: 0px 0px 10px #ddd;
+    }
+}

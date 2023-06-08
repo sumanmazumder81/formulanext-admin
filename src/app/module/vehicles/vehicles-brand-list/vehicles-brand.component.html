@@ -1,0 +1,10 @@
+<Vehicles-app></Vehicles-app>
+<div class="loader" *ngIf="loader">
+        <mat-spinner ></mat-spinner>
+    </div>
+<div class="list">
+        <app-list-of-table [allTableData]="allTableData" [tableHeaderData]="displayedColumns" [pageTitle]="pageTitle" [entityType]="'vehicles brand'" (tableDeleteId)="delete($event)" (tableEditId)="edit($event)"></app-list-of-table>
+    <a class="addList" [routerLink]="['/dashboard/vehicles/vehiclesBrand/brandEntities']">
+        <img src="assets/images/feather-plus.svg" />
+    </a>
+</div>

@@ -1,0 +1,22 @@
+
+    <div class="loader" *ngIf="loader">
+      <mat-spinner ></mat-spinner>
+  </div>
+    <label>{{document.label}}</label>
+    <div class="upload_image">
+        <div *ngIf="!(document.imageUrl || previews.length)">
+          <input type="file" enctype="multipart/form-data" id="fileInput" name="fileInput" accept="image/*" multiple (change)="selectFiles($event)" />
+        </div>
+        <div class="image_preview" *ngIf="!document.imageUrl">
+          <img *ngFor='let preview of previews' [src]="preview" class="preview">
+        </div>
+        <div class="image_preview">
+          <img [src]="document.imageUrl" class="preview">
+        </div>
+        <p *ngIf="!previews.length && !document.imageUrl" class="select_image">
+          <img src="assets/images/2956800.png"/>
+          <span>{{document.label}}</span>
+        </p>
+        <p *ngIf="selectedFileNames.length" class="preview_text">{{selectedFileNames}}</p>
+        <a *ngIf="document.imageUrl || previews.length" class="close" (click)="deleteImag()"><i class="fa fa-times" aria-hidden="true"></i></a>
+    </div>

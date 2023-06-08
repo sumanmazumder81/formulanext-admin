@@ -1,0 +1,39 @@
+<master-app></master-app>
+<div class="loader" *ngIf="loader">
+    <mat-spinner></mat-spinner>
+</div>
+<div class="list">
+    <div class="header">
+        <h3>Licence class add</h3>
+    </div>
+    <div class="custom-form">
+        <form [formGroup]="licenceClassFrom" class="row justify-content-center">
+            <div class="col-lg-5 form-field-bg">
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle class name</mat-label>
+                    <input matInput placeholder="Vehicle class name" name="className" formControlName="className">
+                    <mat-icon matSuffix>
+                        <img src="./assets/images/chassies-icon.svg" />
+                    </mat-icon>
+                    <mat-error *ngIf="licenceClassFrom?.get('className')?.errors?.required">
+                        Class name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle rank</mat-label>
+                    <input matInput placeholder="Vehicle rank" type="number" id="associatedWeight" name="associatedWeight" formControlName="associatedWeight">
+                    <mat-icon matSuffix>
+                        <img src="./assets/images/chassies-icon.svg" />
+                    </mat-icon>
+                    <mat-error *ngIf="licenceClassFrom?.get('associatedWeight')?.errors?.required">
+                        Vehicle rank is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <div class="text-center">
+                    <a mat-button class="save" (click)="licenceClassAdd()" [disabled]="licenceClassFrom.invalid" *ngIf="!licenceClassId">Submit</a>
+                    <a mat-button class="save" (click)="licenceClassEdit()" [disabled]="licenceClassFrom.invalid" *ngIf="licenceClassId">Save</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

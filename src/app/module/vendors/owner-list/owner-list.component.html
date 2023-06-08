@@ -1,0 +1,8 @@
+<div class="loader" *ngIf="loader">
+  <mat-spinner ></mat-spinner>
+</div>
+<vendors-root></vendors-root>
+<div class="list owner_list">
+    <app-list-of-table [allTableData]="allTableData" [pageSize]="pageSize" [isCallFromBackend]="true" [pageIndex]="pageIndex" [dataLength]="dataLength" [entityType]="'owner'" (setpagination)="setPegination($event)" [tableHeaderData]="displayedColumns" [pageTitle]="pageTitle" [expandRow]="true"  (tableDeleteId)="delete($event)" (tableEditId)="edit($event)" (search)="search($event)"></app-list-of-table>
+  <a class="addList" (click)="addOwner()"><img src="assets/images/feather-plus.svg"/></a>
+</div>

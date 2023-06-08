@@ -1,0 +1,16 @@
+<div class="loader" *ngIf="loader">
+    <mat-spinner ></mat-spinner>
+</div>
+<div class="">
+    <div class="header">
+        <h3>Owner Add</h3>
+        <div class="header-right">
+            <button mat-button matStepperNext class="save" (click)="saveDocument()">Save</button>
+        </div>
+    </div>
+    <div class="row" >
+            <div class="col-lg-3" *ngFor="let document of filteredImageList; let i = index">
+                <app-upload-image [document]="document" [imageUploadForm]="imageUploadForm"></app-upload-image>
+            </div>
+    </div>
+</div>
